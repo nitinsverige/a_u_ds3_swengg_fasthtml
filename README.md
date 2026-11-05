@@ -79,3 +79,23 @@ erDiagram
   employee ||--o{ employee_events : "employee_id"
   notes }o--o{ employee_events : ""
 ```
+
+
+
+## Running the project dashboard using FastHTML
+The project has a simple interactive employee and team events dashboard, which has been built using FastHTML.
+These instructions may vary by Windows or Apple OS and by version.
+
+# Steps on how to run the dashboard locally:
+
+# 1. Activate your project's virtual environment:
+source .venv/Scripts/activate
+
+# 2. Install the dependencies:
+pip install -r requirements.txt
+
+# 3. Start the dashboard: 
+python report/dashboard.py 
+
+# 4. Open your local URL shown in your terminal in your web browser:
+For example, http://localhost:5001/employee/17
