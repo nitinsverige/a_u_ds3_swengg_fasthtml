@@ -162,3 +162,14 @@ cython_debug/
 #.idea/
 # FastHTML session secret (generated at runtime)
 .sesskey
+
+# Python build artifact
+build/
+dist/
+*.egg-info/
+
+# Temporary file
+sdist_test/
+
+# Temporary package testing directory
+/%TEMP%sdist_test/
