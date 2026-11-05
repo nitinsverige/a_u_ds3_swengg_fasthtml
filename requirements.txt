@@ -1,0 +1,15 @@
+scikit-learn==1.5.2
+python-fasthtml==0.8.0
+matplotlib==3.9.2
+scipy==1.14.1
+numpy==2.1.2
+pandas==2.2.3
+pytest
+flake8
+ipython
+fastcore==1.7.29
+fastlite==0.0.13
+sqlite-minutils==4.0.3
+starlette==0.41.3
+# Install project's own Python package (employee_events)
+-e ./python-package
