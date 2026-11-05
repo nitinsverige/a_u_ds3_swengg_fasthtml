@@ -1,8 +1,9 @@
-from fasthtml.common import *
+# from fasthtml.common import *
+from fasthtml.common import FastHTML, H1, Div, serve
 import matplotlib.pyplot as plt
 
 # Import QueryBase, Employee, Team from employee_events
-from employee_events import QueryBase, Employee, Team
+from employee_events import Employee, Team
 
 # import the load_model function from the utils.py file
 from utils import load_model
@@ -17,7 +18,7 @@ from base_components import (
     Radio,
     MatplotlibViz,
     DataTable
-    )
+)
 
 from combined_components import FormGroup, CombinedComponent
 
@@ -25,10 +26,12 @@ from combined_components import FormGroup, CombinedComponent
 # Create a subclass of base_components/dropdown # called `ReportDropdown`
 class ReportDropdown(Dropdown):
     def build_component(self, entity_id, model):
-        #  Set the `label` attribute so it is set #  to the `name` attribute for the model
+        # Set the `label` attribute so it is set #  to the `name` attribute for
+        # the model
         self.label = model.name
         # Return the output from the # parent class's build_component method
         return super().build_component(entity_id, model)
+
     def component_data(self, entity_id, model):
         return model.names()
 
@@ -37,13 +40,14 @@ class ReportDropdown(Dropdown):
 class Header(BaseComponent):
     def build_component(self, entity_id, model):
         return H1(model.name)
-          
+
 
 # Create a subclass of base_components/MatplotlibViz
 # called `LineChart`
 class LineChart(MatplotlibViz):
     def visualization(self, entity_id, model):
-        # Pass the `asset_id` argument to# the model's `event_counts` method to # receive the x (Day) and y (event count)
+        # Pass the `asset_id` argument to# the model's `event_counts` method to
+        # # receive the x (Day) and y (event count)
         df = model.event_counts(entity_id)
         df = df.fillna(0)
         df = df.set_index('event_date')
@@ -60,6 +64,7 @@ class LineChart(MatplotlibViz):
 
 class BarChart(MatplotlibViz):
     predictor = load_model()
+
     def visualization(self, entity_id, model):
         data = model.model_data(entity_id)
         probabilities = self.predictor.predict_proba(data)
@@ -75,27 +80,33 @@ class BarChart(MatplotlibViz):
         self.set_axis_styling(ax, bordercolor='black', fontcolor='black')
 
 
-# Create a subclass of combined_components/CombinedComponent # called Visualizations
+# Create a subclass of combined_components/CombinedComponent # called
+# Visualizations
 class Visualizations(CombinedComponent):
     children = [LineChart(), BarChart()]
     outer_div_type = Div(cls='grid')
-            
+
 # Create a subclass of base_components/DataTable # called `NotesTable`
+
+
 class NotesTable(DataTable):
     def component_data(self, entity_id, model):
         return model.notes(entity_id)
-    
+
 
 class DashboardFilters(FormGroup):
     id = "top-filters"
     action = "/update_data"
-    method="POST"
-    children = [ Radio(values=["Employee", "Team"], name='profile_type', hx_get='/update_dropdown',hx_target='#selector'),
-        ReportDropdown(id="selector",name="user-selection")]
-    
+    method = "POST"
+    children = [Radio(values=["Employee", "Team"], name='profile_type',
+                      hx_get='/update_dropdown', hx_target='#selector'),
+                ReportDropdown(id="selector", name="user-selection")]
+
 # Create a subclass of CombinedComponents # called `Report`
+
+
 class Report(CombinedComponent):
-    children = [Header(),DashboardFilters(),Visualizations(), NotesTable()]
+    children = [Header(), DashboardFilters(), Visualizations(), NotesTable()]
 
 
 # Initialize a fasthtml app
@@ -142,7 +153,6 @@ async def update_data(r):
         return RedirectResponse(f"/employee/{id}", status_code=303)
     elif profile_type == 'Team':
         return RedirectResponse(f"/team/{id}", status_code=303)
-    
 
 
 serve()

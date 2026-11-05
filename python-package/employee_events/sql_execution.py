@@ -3,22 +3,19 @@ from pathlib import Path
 from functools import wraps
 import pandas as pd
 
-# Using pathlib, create a `db_path` variable # that points to the absolute path for the `employee_events.db` file
 db_path = Path(__file__).resolve().parent / 'employee_events.db'
 
 
 # Define a class called `QueryMixin`
 class QueryMixin:
-    
-    # Define a method named `pandas_query`  # that receives an sql query as a string # and returns the query's result# as a pandas dataframe
     def pandas_query(self, sql_query):
         connection = connect(db_path)
         try:
             return pd.read_sql_query(sql_query, connection)
-        finally:            # Always release the connection, even if the query fails
+        finally:
+            # Always release the connection, even if the query fails
             connection.close()
 
-    # Define a method named `query`   # that receives an sql_query as a string # and returns the query's result as
     def query(self, sql_query):
         connection = connect(db_path)
         try:
@@ -26,16 +23,14 @@ class QueryMixin:
             return cursor.execute(sql_query).fetchall()
         finally:
             connection.close()
-    
 
- 
- # Leave this code unchanged
+
+# Leave this code unchanged
 def query(func):
     """
     Decorator that runs a standard sql execution
     and returns a list of tuples
     """
-
     @wraps(func)
     def run_query(*args, **kwargs):
         query_string = func(*args, **kwargs)
