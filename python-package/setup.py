@@ -13,7 +13,8 @@ setup_args = dict(
     description='SQL Query API',
     packages=find_packages(),
     package_data={'': ['employee_events.db', 'requirements.txt']},
-    install_requirements=requirements,
+    # install_requirements=requirements,
+    install_requires=[r for r in requirements if r.strip()],
 )
 
 if __name__ == "__main__":
